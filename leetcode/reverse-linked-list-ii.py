@@ -5,28 +5,27 @@
 #         self.next = next
 class Solution:
     def reverseBetween(self, head: Optional[ListNode], left: int, right: int) -> Optional[ListNode]:
-        
-        # get to left 
+        # set up dummy_node
         dummy_node = ListNode(0, head)
+        node_before_reversal = dummy_node
 
-        prev_ptr, left_ptr = dummy_node, head
-        
+        # iterate thru LL until you come to left position
+        left_pointer = head
 
         for _ in range(left - 1):
-            prev_ptr = left_ptr
-            left_ptr = left_ptr.next
+            left_pointer = left_pointer.next
+            node_before_reversal = node_before_reversal.next
 
-        # reverse the nodes from position 'left' to position 'right'    
-        prev = None
-        curr = left_ptr
+        # reverse right - left + 1 nodes
+        prev, curr = None, left_pointer
+
         for _ in range(right - left + 1):
-            curr_nxt = curr.next
+            curr_next = curr.next
             curr.next = prev
-            prev, curr = curr, curr_nxt
+            prev, curr = curr, curr_next
         
         # rewire the nodes
-        tail = prev_ptr.next
-        prev_ptr.next = prev
-        tail.next = curr
+        node_before_reversal.next.next = curr
+        node_before_reversal.next = prev
 
         return dummy_node.next
