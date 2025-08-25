@@ -5,19 +5,27 @@
 #         self.next = next
 class Solution:
     def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
-        # creating a dummy Node here is super helpful for dealing with edge cases
-        dummy = ListNode(0, head)
-        left, right = dummy, dummy
+        # get the count of nodes in LL
+        node_count = 0
+        count_pointer = head
+
+        while count_pointer:
+            node_count += 1
+            count_pointer = count_pointer.next
         
-        # create a gap of n nodes between left and right pointers
-        for _ in range(n + 1):
-            right = right.next
+        # figure out the node to remove
+        node_to_remove = node_count - n
+
+        # edge case
+        if node_to_remove == 0:
+            return head.next
         
-        # iterate and update until right pointer reaches end of LL
-        while right:
-            left, right = left.next, right.next
+        # go to node right before the node we want to remove
+        curr = head
+        for _ in range(node_to_remove - 1):
+            curr = curr.next
         
-        # the node we want to remove is the node right next to left ptr
-        left.next = left.next.next
-    
-        return dummy.next
+        # remove the node by rewiring it to the next
+        curr.next = curr.next.next
+
+        return head
