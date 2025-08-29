@@ -1,21 +1,21 @@
 class Solution:
     def characterReplacement(self, s: str, k: int) -> int:
-        l, longest = 0, 0
-        rolling_hash = defaultdict(int)
+        # initialize these variables
+        l, longest, most_frequent_character = 0, 0, 0
+        letter_map = defaultdict(int)
 
-        most_frequent_letter_count = 0
-
-        # use sliding window technique
         for r in range(len(s)):
-            rolling_hash[s[r]] += 1
-            # when we expand our window size, we try to update most_frequent_letter_count
-            most_frequent_letter_count = max(most_frequent_letter_count, rolling_hash[s[r]])
+            # append the new character to map
+            letter_map[s[r]] += 1
+            # update the most_frequent_character only when we increase the window size
+            most_frequent_character = max(most_frequent_character, letter_map[s[r]])
 
-            # check if window is too large to make k replacements with most frequent letter
-            while (r - l + 1) - most_frequent_letter_count > k:
-                rolling_hash[s[l]] -= 1
+            # valid window: window length - most_frequent <= k
+            while (r - l + 1) - most_frequent_character > k:
+                letter_map[s[l]] -= 1
                 l += 1
-            # get the longest substring length, if possible 
+            
+            # update the count of longest window, if possible
             longest = max(longest, r - l + 1)
         
         return longest
