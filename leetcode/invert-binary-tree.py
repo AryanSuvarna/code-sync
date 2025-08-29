@@ -6,7 +6,6 @@
 #         self.right = right
 class Solution:
     def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
-        # DFS (iterative)
         # base case
         if not root:
             return None
@@ -15,8 +14,9 @@ class Solution:
 
         while stack:
             node = stack.pop()
+
             node.left, node.right = node.right, node.left
-            
+
             if node.left:
                 stack.append(node.left)
             if node.right:
