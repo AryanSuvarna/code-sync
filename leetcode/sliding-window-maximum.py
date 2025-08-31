@@ -1,24 +1,27 @@
 class Solution:
     def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        # init variables
+        l, r = 0, 0
         output = []
-        q = deque()  # stores indices, values are in decreasing order (monotonic decreasing)
-        l = r = 0
+        # we will store the indices here; easier to know what elements to remove when shifting window
+        # this queue will also store the max values
+        q = collections.deque() 
 
+        # go thru each window
         while r < len(nums):
-            # pop smaller values from the back of deque
+            # check if curr value is max in queue
             while q and nums[q[-1]] < nums[r]:
                 q.pop()
             q.append(r)
 
-            # remove leftmost index if it's out of the window
-            if q[0] < l:
+            # check if the max needs to be popped if its index is out of range of window
+            while q[0] < l:
                 q.popleft()
 
-            # record the max value once the first window is formed
-            if (r + 1) >= k:
+            # if window is size k, add max to output. also update window
+            if (r - l + 1) == k:
                 output.append(nums[q[0]])
-                l += 1  # move window forward
-
+                l += 1
             r += 1
-
+        
         return output
