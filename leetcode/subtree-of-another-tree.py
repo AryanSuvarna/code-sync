@@ -5,6 +5,7 @@
 #         self.left = left
 #         self.right = right
 class Solution:
+    # sameTree solution
     def sameTree(self, root_1, root_2):
         if not root_1 and not root_2:
             return True
@@ -17,7 +18,9 @@ class Solution:
         # there is a subroot but no root
         if not root: return False
 
+        # check if subroot exists in root
         if self.sameTree(root, subRoot):
             return True
         
+        # if it doesn't, recursively call isSubtree on the left and right branches
         return self.isSubtree(root.left, subRoot) or self.isSubtree(root.right, subRoot)
