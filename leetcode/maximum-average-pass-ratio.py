@@ -20,7 +20,7 @@ class Solution:
 
         # now go thru the heap and choose best spot for extra students
         for _ in range(extraStudents):
-            # pop the highest gain
+            # we only want to pop from the heap and add a student to the class that has the highest gain potential 
             gain, num_passes, num_total = heapq.heappop(max_heap)
 
             # put the same class back into the heap with an extra student while also calculating the gain
