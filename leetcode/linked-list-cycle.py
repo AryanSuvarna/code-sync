@@ -6,21 +6,18 @@
 
 class Solution:
     def hasCycle(self, head: Optional[ListNode]) -> bool:
-        # base cases
         if not head:
             return False
         if head and head.next == None:
             return False
         
-        slow = head
-        fast = head.next
+        slow, fast = head, head.next
 
         while fast and fast.next:
-            # ever come back to same node, we have dupe
             if slow == fast:
                 return True
-
+            
             slow = slow.next
             fast = fast.next.next
-
+        
         return False
