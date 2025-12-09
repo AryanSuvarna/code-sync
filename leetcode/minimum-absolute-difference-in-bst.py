@@ -6,23 +6,29 @@
 #         self.right = right
 class Solution:
     def getMinimumDifference(self, root: Optional[TreeNode]) -> int:
-        min_diff = float("inf")
-        stack = []
-        prev = float("-inf")
+        # In order traversal
+        
         curr = root
+        prev_node_val = float("-inf")
+        min_diff = float("inf")
+        # stores the nodes to visit in-order
+        stack = []
 
         while curr or stack:
-            # keep appending the left side of the tree
+            # if node is not None, keep moving down the left branch
             if curr:
                 stack.append(curr)
                 curr = curr.left
-            # once there is no left side, try to calculate the difference between any 2 parent-child relationship
             else:
                 curr = stack.pop()
-                min_diff = min(min_diff, abs(curr.val - prev))
-                # update the prev value so we can compare with other branches of the tree. 
-                prev = curr.val
-                # check right side of the tree as well
+                
+                # calculate the diff between the curr and prev value
+                min_diff = min(min_diff, abs(curr.val - prev_node_val))
+                
+                # update prev_node_val with the current node's value
+                prev_node_val = curr.val
+                
+                # check the right side of the branch as well
                 curr = curr.right
-
+        
         return min_diff
