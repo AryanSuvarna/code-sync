@@ -6,21 +6,26 @@
 #         self.right = right
 class Solution:
     def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
-        # In order traversal
-        stack = []
-        n = 0
+        # In order traversal solution
+        
         curr = root
+        count = 0
+        # store the nodes in the order they are visited
+        stack = []
 
         while curr or stack:
-            # keep going left and appending results till we cant no more
+            # append all the left nodes first before we start counting to k
             while curr:
                 stack.append(curr)
                 curr = curr.left
-            
+
+            # pop the most recent visited node and update count as we are processing this node 
             curr = stack.pop()
-            n += 1
+            count += 1
 
-            if n == k:
+            # if count == k, return the current value
+            if count == k:
                 return curr.val
-
+            
+            # we need to process the right branch as well
             curr = curr.right
