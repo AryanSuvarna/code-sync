@@ -7,20 +7,23 @@
 class Solution:
     def isBalanced(self, root: Optional[TreeNode]) -> bool:
         
-        def dfs(node):
-            if not node:
-                return [True, 0]
-
-            left_branch = dfs(node.left)
-            right_branch = dfs(node.right)
-
-            balanced = True
-
-            if left_branch[0] and right_branch[0] and abs(left_branch[1] - right_branch[1]) <= 1:
-                balanced = True
-            else:
-                balanced = False
+        def dfs(root):
+            # base case
+            if not root:
+                return (0, True)
             
-            return [balanced, max(left_branch[1], right_branch[1]) + 1]
-        
-        return dfs(root)[0]
+            # POST ORDER TRAVERSAL
+
+            # calculate left and right branch
+            left_height, left_status = dfs(root.left)
+            right_height, right_status = dfs(root.right)
+
+            # print(f"{root.val}, left={left_height}, right={right_height}")
+
+            # check if heights differ more than 1 AND checks if any of the subbranches were already unbalanced
+            if abs(left_height - right_height) > 1 or not left_status or not right_status:
+                return (0, False)
+            
+            return (1 + max(left_height, right_height), True)
+
+        return dfs(root)[1]
