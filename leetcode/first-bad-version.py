@@ -5,6 +5,7 @@ class Solution:
     def firstBadVersion(self, n: int) -> int:
         l, r = 0, n
         first_bad_version = r
+        
         while l <= r:
             m = (l + r) // 2
 
