@@ -1,21 +1,24 @@
 class Solution:
     def minEatingSpeed(self, piles: List[int], h: int) -> int:
-        # min speed is one banana; max speed is eating largest pile in 1 hr
-        l, r = 1, max(piles)
-        k = l
+        # this is our right bound (should only eat at rate of largest pile)
+        largest_pile = max(piles)
 
-        # try to find minimum k such that Koko will be able to finish all bananas before guards come back
+        l, r = 1, largest_pile
+        min_rate = largest_pile
+
         while l <= r:
-            m = (l + r) // 2
-
-            # compute how long it will take to eat all piles with rate of m
+            rate = (l + r) // 2
+            
+            # calculate total time taken for rate
             time_taken = 0
             for pile in piles:
-                time_taken += math.ceil(pile / m)
-            
+                time_taken += math.ceil(pile / rate)
+
             if time_taken > h:
-                l = m + 1
-            else: # check if we can find a smaller minimum
-                k, r = m, m - 1
+                l = rate + 1
+            else:
+                # update min rate if possible with a smaller rate
+                min_rate = min(min_rate, rate)
+                r = rate - 1
         
-        return k
+        return min_rate
