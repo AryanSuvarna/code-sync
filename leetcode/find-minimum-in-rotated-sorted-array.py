@@ -4,7 +4,6 @@ class Solution:
         smallest = nums[l]
 
         while l <= r:
-            print(smallest)
             # edge case: the list is already sorted or a single element in list
             if nums[l] <= nums[r]:
                 smallest = min(smallest, nums[l])
