@@ -1,26 +1,27 @@
 class Solution:
     def search(self, nums: List[int], target: int) -> int:
-        # Binary search
+        # problem running in O(log n) is clear indicating that binary search is needed for problem
+
         l, r = 0, len(nums) - 1
 
         while l <= r:
             m = (l + r) // 2
-
+            
+            # we found target!
             if target == nums[m]:
                 return m
 
-            # determine which side of list nums[m] is in
-            # this will help us to quickly find target
-
-            # left side is sorted, so we search the left side if target present
-            if nums[m] > nums[r]:
+            # we're on left side of split
+            if nums[r] < nums[m]:
+                # within range of (l, m)
                 if target < nums[m] and target >= nums[l]:
                     r = m - 1
                 else:
                     l = m + 1
             
-            # right side is sorted, so we search right side if target present
+            # we're on right side of split
             else:
+                # within range of (m, r)
                 if target > nums[m] and target <= nums[r]:
                     l = m + 1
                 else:
