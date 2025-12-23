@@ -5,27 +5,34 @@
 #         self.next = next
 class Solution:
     def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
-        dummyNode = ListNode()
+        
+        dummy_node = ListNode()
+        
         # base cases
         if not list1:
             return list2
         if not list2:
             return list1
+        
+        curr_1, curr_2 = list1, list2
 
-        # check both lists until one list gets empty
-        l1Ptr, l2Ptr = list1, list2
-        curr = dummyNode
+        curr = dummy_node
 
-        while l1Ptr and l2Ptr:
-            if l1Ptr.val < l2Ptr.val:
-                curr.next = l1Ptr
-                l1Ptr = l1Ptr.next
+        # if both pointers have something, we need to determine which one to append
+        while curr_1 and curr_2:
+            if curr_1.val < curr_2.val:
+                curr.next = curr_1
+                curr_1 = curr_1.next
                 curr = curr.next
             else:
-                curr.next = l2Ptr
-                l2Ptr = l2Ptr.next
+                curr.next = curr_2
+                curr_2 = curr_2.next
                 curr = curr.next
         
-        curr.next = l1Ptr or l2Ptr
-
-        return dummyNode.next
+        # we exited while loop (one or both 2 pointers are empty). if there is still nodes remaining, just append to curr.next
+        if curr_1:
+            curr.next = curr_1
+        elif curr_2:
+            curr.next = curr_2
+        
+        return dummy_node.next
