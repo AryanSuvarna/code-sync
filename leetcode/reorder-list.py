@@ -9,29 +9,32 @@ class Solution:
         Do not return anything, modify head in-place instead.
         """
         # get second half of list
-        fast, slow = head.next, head
+        slow, fast = head, head.next
 
         while fast and fast.next:
             slow = slow.next
             fast = fast.next.next
+        
+        second_half = slow.next
+        slow.next = None
 
-        # reverse second half of list
-        prev, curr = None, slow.next
+        # reverse the second half
+        prev = None
 
-        while curr:
-            curr_next = curr.next
-            curr.next = prev
-            prev, curr = curr, curr_next
+        while second_half:
+            second_half_next = second_half.next
+            second_half.next = prev
+            prev = second_half
+            second_half = second_half_next
+        
+        # now we combine both halves
+        while prev:
+            head_next, prev_next = head.next, prev.next
 
-        # one by one, add the list values in (we're modifying 'head' in place)
-        slow.next = None # this breaks the relationship up between left and right
-
-        while prev: # right half of list is always going to be smaller than left (our bottleneck in loop)
-            prev_next = prev.next
-            head_next = head.next
-
-            # point head's next to prev and then prev's next to head's stored next
             head.next = prev
             prev.next = head_next
 
-            head, prev = head_next, prev_next
+            prev = prev_next
+            head = head_next
+        
+        return head
