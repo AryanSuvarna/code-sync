@@ -15,7 +15,9 @@ class Solution:
             slow = slow.next
             fast = fast.next.next
         
+        # second half starts on next node
         second_half = slow.next
+        # make the first half end on None
         slow.next = None
 
         # reverse the second half
