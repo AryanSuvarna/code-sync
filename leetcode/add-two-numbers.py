@@ -5,29 +5,23 @@
 #         self.next = next
 class Solution:
     def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
-        # add the numbers together and create a new LL
-        first_num, second_num = l1, l2
-        sum_LL = ListNode()
-        head = sum_LL
+        dummy = ListNode()
 
+        l1_ptr, l2_ptr = l1, l2
         carry = 0
-        while first_num or second_num or carry:
-            # get the values if the pointers aren't None, otherwise set to 0
-            first_val = first_num.val if first_num else 0
-            second_val = second_num.val if second_num else 0
+        res = dummy
+        
+        while l1_ptr or l2_ptr or carry:
+            first_val = l1_ptr.val if l1_ptr else 0
+            second_val = l2_ptr.val if l2_ptr else 0
 
             calc = first_val + second_val + carry
-
-            # get carry value if calc is greater than 10
             carry = 1 if calc >= 10 else 0
 
-            # take the remainder as the new node value
-            head.next = ListNode(calc % 10, None)
-
-            # update the pointers
-            head = head.next
-            # edge case: we have carry but no first and second values
-            first_num = first_num.next if first_num else None
-            second_num = second_num.next if second_num else None
+            res.next = ListNode(calc % 10, None)
             
-        return sum_LL.next
+            res = res.next
+            l1_ptr = l1_ptr.next if l1_ptr else None
+            l2_ptr = l2_ptr.next if l2_ptr else None
+        
+        return dummy.next
