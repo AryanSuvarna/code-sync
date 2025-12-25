@@ -19,10 +19,8 @@ class Solution:
             # we found our target sum AND the node is a leaf node
             if total == targetSum and not root.left and not root.right:
                 return True
-            
-            left_branch = dfs(root.left, total)
-            right_branch = dfs(root.right, total)
 
-            return left_branch or right_branch
+            # return the value of the left and right branches
+            return dfs(root.left, total) or dfs(root.right, total)
         
         return dfs(root, 0)
