@@ -24,9 +24,9 @@ class Solution:
 
             # run backtrack on each letter
             for letter in letters:
-                combo += letter
-                backtrack(i + 1, combo)
-                combo = combo[:-1]
+                backtrack(i + 1, combo + letter)
         
-        backtrack(0, "")
+        if digits:
+            backtrack(0, "")
+        
         return res
