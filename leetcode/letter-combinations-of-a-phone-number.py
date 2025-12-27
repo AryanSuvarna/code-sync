@@ -12,21 +12,21 @@ class Solution:
         }
 
         res = []
-        combo = ""
 
-        def backtrack(i):
-            nonlocal combo
-
+        def backtrack(i, combo):
+            # base case: we reached end of digits
             if i == len(digits):
                 res.append(combo)
                 return
-        
+
+            # get the possibe letters for the current digit
             letters = num_to_letter[digits[i]]
 
+            # run backtrack on each letter
             for letter in letters:
                 combo += letter
-                backtrack(i + 1)
+                backtrack(i + 1, combo)
                 combo = combo[:-1]
         
-        backtrack(0)
+        backtrack(0, "")
         return res
