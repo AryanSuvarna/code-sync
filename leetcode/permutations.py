@@ -1,29 +1,29 @@
 class Solution:
     def permute(self, nums: List[int]) -> List[List[int]]:
         res = []
+        subset = []
 
-        def backtrack(num_used, perm):
-            # base case: we made a permutation!
-            if len(perm) == len(nums):
-                res.append(perm.copy())
+        def backtrack(num_used):
+            # base case: we made a permutation
+            if len(subset) == len(nums):
+                res.append(subset.copy())
                 return
             
             for num in nums:
-                # skip this num as it's in permutation already
                 if num in num_used:
                     continue
                 
-                # include num
+                # add
+                subset.append(num)
                 num_used.add(num)
-                perm.append(num)
+                
+                # explore
+                backtrack(num_used)
 
-                # explore with new addition...
-                backtrack(num_used, perm)
-
-                # exclude
+                # remove
+                subset.pop()
                 num_used.remove(num)
-                perm.pop()
-            
-        backtrack(set(), [])
+        
+        backtrack(set())
 
         return res
