@@ -1,15 +1,16 @@
 class Solution:
-    def lengthOfLIS(self, nums):
-        n = len(nums)
-        dp = [[0] * (n + 1) for _ in range(n + 1)]
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        # BOTTOM UP SOLUTION
+        
+        # dp array keeping track of the largest subsequence we can create at each index
+        LIS = [1] * len(nums)
 
-        for i in range(n - 1, -1, -1):
-            for j in range(i - 1, -2, -1):
-                LIS = dp[i + 1][j + 1]  # Not including nums[i]
-
-                if j == -1 or nums[j] < nums[i]:
-                    LIS = max(LIS, 1 + dp[i + 1][i + 1])  # Including nums[i]
-
-                dp[i][j + 1] = LIS
-
-        return dp[0][0]
+        # iterate backwards
+        for i in range(len(nums) - 1, -1, -1):
+            # check every position after index i
+            for j in range(i + 1, len(nums)):
+                if nums[i] < nums[j]:
+                    LIS[i] = max(LIS[i], 1 + LIS[j])
+        
+        # return the largest subsquence in the list
+        return max(LIS)
