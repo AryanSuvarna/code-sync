@@ -1,37 +1,38 @@
 class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        # building prerequisites adjancency list
         prereq_map = defaultdict(list)
 
-        for course, prereq in prerequisites:
-            prereq_map[course].append(prereq)
+        for c, p in prerequisites:
+            prereq_map[c].append(p)
         
-        
+        # dfs for going thru all prereqs of course
         visited = set()
-
         def dfs(c):
-            # we have a loop (impossible to learn all courses)
+            # we have detected a cycle
             if c in visited:
                 return False
             
-            # curr course has no prereqs so just return true
+            # course has no more prereqs so we can just return True early
             if prereq_map[c] == []:
                 return True
-            
-            # explore the prereqs of current course
-            
-            # explore course
+
+            # dfs....
             visited.add(c)
-            # run dfs on prereqs
-            for pre in prereq_map[c]:
-                if not dfs(pre): return False
-            
-            # remove it and set preq map to empty as we have proven it is possible to visit all prereqs
+            for p in prereq_map[c]:
+                if not dfs(p): return False
             visited.remove(c)
+
+            # we've successfully parsed thru course c and its prereqs
+            # set its adjancency list to [] so we avoid computing again
             prereq_map[c] = []
+
             return True
+
         
-        # now run dfs on all courses and return true if all courses are possible to take
+        # iterate thru every course
         for c in range(numCourses):
             if not dfs(c): return False
-        
+
+        # return True if we can run dfs successfully on every course
         return True
