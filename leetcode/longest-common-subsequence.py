@@ -18,6 +18,8 @@ class Solution:
                 else:
                     curr[j] = max(curr[j + 1], prev[j])
 
+            # assign prev -> curr
+            # curr -> prev (curr is going to be overwritten anyways in next loop)
             prev, curr = curr, prev
 
         return prev[0]
