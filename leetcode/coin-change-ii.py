@@ -1,21 +1,20 @@
 class Solution:
     def change(self, amount: int, coins: List[int]) -> int:
         n = len(coins)
-        coins.sort()
+        # dp 2d array for keeping track of combos
         dp = [[0] * (amount + 1) for _ in range(n + 1)]
+        coins.sort()
 
-        # set all positions with amount = 0 to 1 (only 1 way to get 0)
-        for i in range(n + 1):
-            dp[i][0] = 1
-
-        # bottom up: build solution
-        for i in range(n - 1, -1, -1):
-            # start at 1, since we already know values in a = 0
+        # set the amount = 0 column to 1 bc there is only one combo to get amount = 0
+        for r in range(n + 1):
+            dp[r][0] = 1
+        
+        for c in range(n - 1, -1, -1):
             for a in range(1, amount + 1):
-                if a >= coins[i]:
-                    # skip curr coin
-                    dp[i][a] = dp[i + 1][a]
-                    # use curr coin
-                    dp[i][a] += dp[i][a - coins[i]]
-
+                if a >= coins[c]:
+                    # case where we skip curr coin
+                    dp[c][a] = dp[c + 1][a]
+                    # case where we also include current coin
+                    dp[c][a] += dp[c][a - coins[c]]
+        
         return dp[0][amount]
