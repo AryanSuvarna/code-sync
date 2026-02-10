@@ -1,24 +1,19 @@
 class Solution:
     def findTargetSumWays(self, nums: List[int], target: int) -> int:
-        # key = (idx, sum), value = num_combos
-        dp = {}
+        # defaultdict(int): this will represent the sum-count pairs (key=sum, value=count)
+        dp = [defaultdict(int) for i in range(len(nums) + 1)]
 
-        def backtrack(idx, curr_sum):
-            # base case: we already memoized this solution
-            if (idx, curr_sum) in dp:
-                return dp[(idx, curr_sum)]
+        # base case
+        # this is saying that with 0 elements and a sum of 0, there is one way to compute this
+        dp[0][0] = 1
 
-            # base case: we used all the values
-            if idx == len(nums):
-                return 1 if curr_sum == target else 0
-            
-            # memoize this combo
-            dp[(idx, curr_sum)] = (
-                # count number of ways from 
-                backtrack(idx + 1, curr_sum + nums[idx]) + 
-                backtrack(idx + 1, curr_sum - nums[idx])
-            )
+        # go thru every every index in nums
+        for i in range(len(nums)):
+            for cur_sum, count in dp[i].items():
+                # move to the next row and add the curr nums value
+                dp[i + 1][cur_sum + nums[i]] += count
+                # move to the next row and remove the 
+                dp[i + 1][cur_sum - nums[i]] += count
 
-            return dp[(idx, curr_sum)]
-        
-        return backtrack(0, 0)
+        # we're looking for the value that is stored at when we use all the indices and we reached the target value
+        return dp[len(nums)][target]
