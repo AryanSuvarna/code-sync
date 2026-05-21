@@ -1,19 +1,16 @@
 class Solution:
     def climbStairs(self, n: int) -> int:
-        memo = {}
-
-        def dp(step):
-            # check if we have already memoized this step
-            if step in memo:
-                return memo[step]
-            
-            # base cases 
-            if step <= 2:
-                return step
-            
-            # recurrence relation
-            memo[step] = dp(step - 1) + dp(step - 2)
-
-            return memo[step]
+        # bottom up DP solution
         
-        return dp(n)
+        # init
+        one_step, two_step = 1, 1
+        curr = 0
+
+        # iterate backwards from n -2 all the way to 0
+        for _ in range(n - 2, -1, -1):
+            curr = one_step + two_step
+            # shift one_step and two_step to the left by 1
+            one_step, two_step = curr, one_step
+        
+        # return the value at one_step as that contains the total # of ways from 0 to n
+        return one_step
