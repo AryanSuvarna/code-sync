@@ -1,28 +1,28 @@
 class Solution:
     def numIslands(self, grid: List[List[str]]) -> int:
-        ROWS = len(grid)
-        COLS = len(grid[0])
-        directions = [[1, 0], [-1, 0], [0, 1], [0, -1]]
-
-        # dfs solution
+        
         def dfs(r, c):
-            # edge cases (boundaries) and we're on water
-            if r < 0 or c < 0 or r >= ROWS or c >= COLS or grid[r][c] == "0":
+            # base case
+            if r < 0 or c < 0 or r > len(grid) - 1 or c > len(grid[0]) - 1 or grid[r][c] == "0":
                 return
             
-            # mark curr position as visited by changing it to a water
+            # mark the current cell as water so we dont visit again
             grid[r][c] = "0"
-
-            # run dfs on all 4 directions
-            for dr, dc in directions:
-                dfs(r + dr, c + dc)
+            
+            # run dfs in every direction
+            dfs(r + 1, c)
+            dfs(r - 1, c)
+            dfs(r, c + 1)
+            dfs(r, c - 1)
 
         island_count = 0
-        for r in range(ROWS):
-            for c in range(COLS):
+
+        # double for loop to go thru every cell val and find land
+        for r in range(len(grid)):
+            for c in range(len(grid[0])):
+                # if we are at land, we run dfs to find the whole island and mark as visited
                 if grid[r][c] == "1":
-                    # run dfs to find whole island and mark it as visited
                     dfs(r, c)
                     island_count += 1
-        
+
         return island_count
