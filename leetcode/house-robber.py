@@ -1,9 +1,24 @@
 class Solution:
     def rob(self, nums: List[int]) -> int:
-        rob_1, rob_2 = 0, 0
+        memo = {}
 
-        for n in nums:
-            tmp = max(rob_2, rob_1 + n)
-            rob_1, rob_2 = rob_2, tmp
+        def dp(n):
+            # our of bounds case
+            if n >= len(nums):
+                return 0
+            
+            # we already cached max value from n
+            if n in memo:
+                return memo[n]
+            
+            # 2 cases: rob OR skip current house
+            rob = nums[n] + dp(n + 2)
+            skip = dp(n + 1)
+
+            # take the max and return
+            memo[n] = max(rob, skip)
+
+            return memo[n]
+
         
-        return rob_2
+        return dp(0)
