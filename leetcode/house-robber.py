@@ -1,20 +1,9 @@
 class Solution:
     def rob(self, nums: List[int]) -> int:
-        memo = {}
+        rob_1, rob_2 = 0, 0
 
-        def dp(i):
-            if i in memo:
-                return memo[i]
-            
-            if i >= len(nums):
-                return 0
-            
-            # 2 scenarios: rob or skip current house
-            rob = nums[i] + dp(i + 2)
-            skip = dp(i + 1)
-
-            memo[i] = max(rob, skip)
-
-            return memo[i]
+        for n in nums:
+            tmp = max(rob_2, rob_1 + n)
+            rob_1, rob_2 = rob_2, tmp
         
-        return dp(0)
+        return rob_2
