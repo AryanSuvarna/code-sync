@@ -1,19 +1,12 @@
 class Solution:
     def minCostClimbingStairs(self, cost: List[int]) -> int:
-        memo = {}
+        # append 0 to end of list to represent the top of the floor
+        cost.append(0)
 
-        def dfs(i):
-            if i in memo:
-                return memo[i]
-
-            # out of bounds error
-            if i >= len(cost):
-                return 0
-            
-            # current cost + cost from next step and 2 steps after
-            memo[i] = cost[i] + min(dfs(i + 1), dfs(i + 2))
-
-            return memo[i]
+        # start at 3rd rightmost val because we know the last value will remain the same
+        for i in range(len(cost) - 3, -1, -1):
+            # take the min of curr value with 1 step and curr value with 2 steps and update the position
+            cost[i] = min(cost[i] + cost[i + 1], cost[i] + cost[i + 2])
         
-        # take the min from step 0 or step 1
-        return min(dfs(0), dfs(1))
+        # cost[0] and cost[1] will be updated with the costs to get to top of the floor from position 0 and 1
+        return min(cost[0], cost[1])
