@@ -2,17 +2,18 @@ class Solution:
     def minCostClimbingStairs(self, cost: List[int]) -> int:
         memo = {}
 
-        def dfs(i):
-            # out of bounds case
+        def dp(i):
+            # case: out of bounds
             if i >= len(cost):
                 return 0
             
-            # position i in cached in memo
+            # case: check if we have already memoized position i
             if i in memo:
                 return memo[i]
             
-            memo[i] = cost[i] + min(dfs(i + 1), dfs(i + 2))
-            
+            # memoize the current position and return
+            memo[i] = cost[i] + min(dp(i + 1), dp(i + 2))
+
             return memo[i]
 
-        return min(dfs(0), dfs(1))
+        return min(dp(0), dp(1))
