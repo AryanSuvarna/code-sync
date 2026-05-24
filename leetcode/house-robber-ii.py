@@ -1,21 +1,26 @@
 class Solution:
     def rob(self, nums: List[int]) -> int:
-        # base case
+        memo = {}
+
         if len(nums) == 1:
             return nums[0]
 
-        # efficient DP solution (O(1) space complexity)
-        def dp(arr):
-            rob_1, rob_2 = 0, 0
-
-            for num in arr:
-                tmp = max(num + rob_1, rob_2)
-                rob_1 = rob_2
-                rob_2 = tmp
+        def dp(i, arr):
+            if i >= len(arr):
+                return 0
             
-            return rob_2
-        
-        second_to_last = dp(nums[:-1])
-        second_to_first = dp(nums[1:])
+            if i in memo:
+                return memo[i]
+            
+            memo[i] = max(arr[i] + dp(i + 2, arr), dp(i + 1, arr))
 
-        return max(second_to_first, second_to_last)
+            return memo[i]
+
+        # nums arr [0: n - 1]
+        first = dp(0, nums[:-1])
+        memo.clear()
+
+        # nums arr [1: ]
+        second = dp(0, nums[1:])
+
+        return max(first, second)
