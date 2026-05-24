@@ -1,19 +1,14 @@
 class Solution:
     def minCostClimbingStairs(self, cost: List[int]) -> int:
-        memo = {}
+        # first example in desc: [10, 15, 20, 0]
+        cost.append(0)
 
-        def dp(i):
-            # case: out of bounds
-            if i >= len(cost):
-                return 0
-            
-            # case: check if we have already memoized position i
-            if i in memo:
-                return memo[i]
-            
-            # memoize the current position and return
-            memo[i] = cost[i] + min(dp(i + 1), dp(i + 2))
+        # update the cost function directly to get the cost from position i
+        for i in range(len(cost) - 3, -1, -1):
+            cost[i] = min(  
+                cost[i] + cost[i + 1],
+                cost[i] + cost[i + 2]
+            )
 
-            return memo[i]
-
-        return min(dp(0), dp(1))
+        # return the first or second step (index 0 or 1), whichever has the smallest val
+        return min(cost[0], cost[1])
