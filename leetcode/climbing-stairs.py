@@ -1,16 +1,18 @@
 class Solution:
     def climbStairs(self, n: int) -> int:
-        # BOTTOM UP APPROACH (build upwards from base cases)
+        memo = {}
 
-        # base case
-        one, two = 1, 1
+        def dp(i):
+            # base case
+            if i <= 2:
+                return i
+            
+            # check if in memo
+            if i in memo:
+                return memo[i]
+            
+            # cache result and return
+            memo[i] = dp(i - 1) + dp(i - 2)
+            return memo[i]
         
-        # iterate till i = n
-        i = 2
-        while i <= n:
-            next_step = one + two
-            # swap one_step with curr, and two_step with one
-            one, two = next_step, one
-            i += 1
-
-        return one
+        return dp(n)
