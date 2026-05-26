@@ -2,23 +2,21 @@ class Solution:
     def rob(self, nums: List[int]) -> int:
         memo = {}
 
-        def dp(n):
-            # our of bounds case
-            if n >= len(nums):
+        def dp(i):
+            # out of bounds
+            if i >= len(nums):
                 return 0
             
-            # we already cached max value from n
-            if n in memo:
-                return memo[n]
+            if i in memo:
+                return memo[i]
             
-            # 2 cases: rob OR skip current house
-            rob = nums[n] + dp(n + 2)
-            skip = dp(n + 1)
+            memo[i] = max(
+                # rob current house
+                nums[i] + dp(i + 2),
+                # skip current house
+                dp(i + 1)
+            )
 
-            # take the max and return
-            memo[n] = max(rob, skip)
-
-            return memo[n]
-
+            return memo[i]
         
         return dp(0)
