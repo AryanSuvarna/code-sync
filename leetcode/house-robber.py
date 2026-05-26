@@ -1,22 +1,12 @@
 class Solution:
     def rob(self, nums: List[int]) -> int:
-        memo = {}
+        rob1, rob2 = 0, 0
 
-        def dp(i):
-            # out of bounds
-            if i >= len(nums):
-                return 0
-            
-            if i in memo:
-                return memo[i]
-            
-            memo[i] = max(
-                # rob current house
-                nums[i] + dp(i + 2),
-                # skip current house
-                dp(i + 1)
+        for n in nums:
+            tmp = max(
+                n + rob1,
+                rob2
             )
-
-            return memo[i]
+            rob1, rob2 = rob2, tmp
         
-        return dp(0)
+        return rob2
